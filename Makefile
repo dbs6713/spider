@@ -61,6 +61,12 @@ docs.kill:
 docs.open:
 	open http://localhost:6064/pkg/github.com/$(REPO_OWNER)/final
 
+push:
+	git add .
+	git status
+	git commit -m "Fixed bugs and updated files"
+	git push -u origin master
+
 # example: make release V=0.0.0
 release:
 	git tag v$(V)

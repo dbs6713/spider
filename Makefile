@@ -12,9 +12,9 @@ bld.cli: clean
 	@echo Building $(VERSION)...
 	#-glide install
 	-mkdir -p ./bld
-	GOOS=linux GOARCH=amd64 go build -a -o ./bld/spider.linux-amd64 -ldflags='-s -w -X donbstringham/spider/ver.Version=$(VERSION)' ./
-	GOOS=darwin GOARCH=amd64 go build -a -o ./bld/spider.darwin-amd64 -ldflags='-s -w -X donbstringham/spider/ver.Version=$(VERSION)' ./
-	GOOS=windows GOARCH=amd64 go build -a -o ./bld/spider.windows-amd64.exe -ldflags='-s -w -X donbstringham/spider/ver.Version=$(VERSION)' ./
+	GOOS=linux GOARCH=amd64 go build -a -o ./bld/spider.linux-amd64 -ldflags='-s -w -X github.com/donbstringham/spider/ver.Version=$(VERSION) -X github.com/donbstringham/spider/ver.Buildtime=$(BUILD_TIME)' ./
+	GOOS=darwin GOARCH=amd64 go build -a -o ./bld/spider.darwin-amd64 -ldflags='-s -w -X github.com/donbstringham/spider/ver.Version=$(VERSION) -X github.com/donbstringham/spider/ver.Buildtime=$(BUILD_TIME)' ./
+	GOOS=windows GOARCH=amd64 go build -a -o ./bld/spider.windows-amd64.exe -ldflags='-s -w -X github.com/donbstringham/spider/ver.Version=$(VERSION) -X github.com/donbstringham/spider/ver.Buildtime=$(BUILD_TIME)' ./
 
 	cd ./bld && find . -name 'final*' | xargs -I{} tar czf {}.tar.gz {}
 	cd ./bld && shasum -a 256 * > sha256sum.txt

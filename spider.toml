@@ -1,0 +1,11 @@
+[core]
+environment = "local"
+waitTime = 0
+
+[db]
+adapter = "mysql"
+host = "67.205.183.11"
+port = 3306
+dbname = "donstringham"
+user = "donstringham"
+pass = "letmein"

@@ -16,11 +16,13 @@ var confCmd = &cobra.Command{
 	Short: "Print the configuration",
 	Long:  "Print the configuration of the Spider application",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("environment: %s\n", viper.GetString("core.environment"))
-		files := viper.Get("core.files").([]interface{})
-		fmt.Printf("files      : ")
-		for i := 0; i < len(files); i++ {
-			fmt.Printf("%s\n             ", files[i])
-		}
+		fmt.Printf("core.environment: %s\n", viper.GetString("core.environment"))
+		fmt.Printf("core.waitTime: %s\n", viper.GetString("core.waitTime"))
+		fmt.Printf("db.adapter: %s\n", viper.GetString("db.adapter"))
+		fmt.Printf("db.host: %s\n", viper.GetString("db.host"))
+		fmt.Printf("db.port: %s\n", viper.GetString("db.port"))
+		fmt.Printf("db.dbname: %s\n", viper.GetString("db.dbname"))
+		fmt.Printf("db.user: %s\n", viper.GetString("db.user"))
+		fmt.Printf("db.pass: %s\n", viper.GetString("db.pass"))
 	},
 }

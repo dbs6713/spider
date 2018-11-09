@@ -32,3 +32,4 @@ manifest-dev.yml
 /.coverage
 /bld
 /.toml
+/spider.toml

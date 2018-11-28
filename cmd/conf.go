@@ -18,11 +18,11 @@ var confCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("core.environment: %s\n", viper.GetString("core.environment"))
 		fmt.Printf("core.waitTime: %s\n", viper.GetString("core.waitTime"))
-		fmt.Printf("db.adapter: %s\n", viper.GetString("db.adapter"))
-		fmt.Printf("db.host: %s\n", viper.GetString("db.host"))
-		fmt.Printf("db.port: %s\n", viper.GetString("db.port"))
-		fmt.Printf("db.dbname: %s\n", viper.GetString("db.dbname"))
-		fmt.Printf("db.user: %s\n", viper.GetString("db.user"))
-		fmt.Printf("db.pass: %s\n", viper.GetString("db.pass"))
+		fmt.Printf("storage.adapter: %s\n", viper.GetString("storage.adapter"))
+		fmt.Printf("storage.host: %s\n", viper.GetString("storage.host"))
+		fmt.Printf("storage.port: %s\n", viper.GetString("storage.port"))
+		fmt.Printf("storage.dbname: %s\n", viper.GetString("storage.dbname"))
+		fmt.Printf("storage.user: %s\n", viper.GetString("storage.user"))
+		fmt.Printf("storage.pass: %s\n", viper.GetString("storage.pass"))
 	},
 }

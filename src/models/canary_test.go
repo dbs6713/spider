@@ -1,4 +1,4 @@
-package src
+package models
 
 import (
 	"testing"

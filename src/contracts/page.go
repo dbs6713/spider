@@ -13,18 +13,11 @@ type PageCounter interface {
 type PageReader interface {
 	Read(rawURL string) (*models.Page, error)
 	ReadAll() ([]*models.Page, error)
-	ReadByDomain(rawDomain string) (*models.Page, error)
 }
 
 // PageRemover defines remove method(s)
 type PageRemover interface {
 	RemoveAll() error
-	RemoveByDomain(rawDomain string) ([]*models.Page, error)
-}
-
-// PageUpdater defines the update method
-type PageUpdater interface {
-	UpdateByDomain(rawDomain string) ([]*models.Page, error)
 }
 
 // PageWriter defines the write method
@@ -37,6 +30,5 @@ type PageStorageAdapter interface {
 	PageCounter
 	PageReader
 	PageRemover
-	PageUpdater
 	PageWriter
 }

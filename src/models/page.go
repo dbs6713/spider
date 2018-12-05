@@ -6,13 +6,14 @@ import (
 )
 
 type Page struct {
+	Fetched bool     `json:"fetched,omitempty"`
 	RawBody string   `json:"body,omitempty"`
 	RawUrl  string   `json:"url,omitempty"`
 	Urls    []string `json:"urls,omitempty"`
 }
 
 func NewPage(u string) *Page {
-	return &Page{RawUrl: u}
+	return &Page{Fetched: false, RawUrl: u}
 }
 
 func (p *Page) ToJSON() (string, error) {

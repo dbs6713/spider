@@ -16,8 +16,9 @@ var confCmd = &cobra.Command{
 	Short: "Print the configuration",
 	Long:  "Print the configuration of the Spider application",
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("core.count: %s\n", viper.GetString("core.count"))
 		fmt.Printf("core.environment: %s\n", viper.GetString("core.environment"))
-		fmt.Printf("core.waitTime: %s\n", viper.GetString("core.waitTime"))
+		fmt.Printf("core.seed: %s\n", viper.GetString("core.seed"))
 		fmt.Printf("storage.adapter: %s\n", viper.GetString("storage.adapter"))
 		fmt.Printf("storage.host: %s\n", viper.GetString("storage.host"))
 		fmt.Printf("storage.port: %s\n", viper.GetString("storage.port"))

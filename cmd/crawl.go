@@ -47,6 +47,11 @@ var crawlCmd = &cobra.Command{
 			//	log.CRITICAL.Println(err)
 			//}
 
+			if p == nil {
+				log.ERROR.Printf("ERROR: page fetch %s", URLque[0])
+				continue
+			}
+
 			// Add to queue and found URL's
 			for x := 0; x < len(p.Urls); x++ {
 				URLque = append(URLque, p.Urls[x])
@@ -104,7 +109,7 @@ func makeRequest(u string, ch chan<- *models.Page) {
 	f := crawler.HttpFetcher{}
 	b, urls, err := f.Fetch(u)
 	if err != nil {
-		log.CRITICAL.Println(err)
+		log.ERROR.Println(err)
 		ch <- nil
 		return
 	}

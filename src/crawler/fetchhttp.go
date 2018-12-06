@@ -1,6 +1,7 @@
 package crawler
 
 import (
+	"crypto/tls"
 	"net/http"
 )
 
@@ -10,15 +11,17 @@ type HttpFetcher struct {
 }
 
 func (f HttpFetcher) Fetch(url string) (string, []string, error) {
-	res, err := http.Get(url)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+	res, err := client.Get(url)
 	if err != nil {
 		return "", nil, err
 	}
-
 	b, u, err := ParseHTML(res.Body)
 	if err != nil {
 		return "", nil, err
 	}
-
 	return b, u, nil
 }

@@ -33,3 +33,4 @@ manifest-dev.yml
 /bld
 /.toml
 /spider.toml
+*.log

@@ -6,6 +6,7 @@ import (
 	"github.com/donbstringham/spider/src/storage"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"time"
 
 	log "github.com/spf13/jwalterweatherman"
 )
@@ -23,7 +24,11 @@ var crawlCmd = &cobra.Command{
 		var fetchCnt = 0
 		var fetchTot = viper.GetInt("core.count")
 		var seedURL = viper.GetString("core.seed")
+
 		URLque := make([]string, 0)
+		ch := make(chan *models.Page)
+
+		start := time.Now()
 
 		repo, err := storage.GetPageRepository("mem")
 		if err != nil {
@@ -33,10 +38,14 @@ var crawlCmd = &cobra.Command{
 		URLque = append(URLque, seedURL)
 
 		for i := 0; fetchCnt < fetchTot || len(URLque) == 0; i++ {
-			p, err := gettheweb(URLque[0])
-			if err != nil {
-				log.CRITICAL.Print(err)
-			}
+			go makeRequest(URLque[0], ch)
+
+			p := <-ch
+
+			//p, err := makeRequest(URLque[0])
+			//if err != nil {
+			//	log.CRITICAL.Println(err)
+			//}
 
 			// Add to queue and found URL's
 			for x := 0; x < len(p.Urls); x++ {
@@ -65,15 +74,39 @@ var crawlCmd = &cobra.Command{
 		if err != nil {
 			log.CRITICAL.Print(err)
 		}
+
 		log.INFO.Printf("Pages fetched: %d", c)
+
+		secs := time.Since(start).Seconds()
+
+		log.INFO.Printf("%.2f elapsed", secs)
 	},
 }
 
-func gettheweb(u string) (*models.Page, error) {
+//func makeRequest(u string) (*models.Page, error) {
+//	f := crawler.HttpFetcher{}
+//	b, urls, err := f.Fetch(u)
+//	if err != nil {
+//		return nil, err
+//	}
+//
+//	p := models.NewPage(u)
+//	p.Fetched = true
+//	p.RawBody = b
+//	p.Urls = urls
+//
+//	return p, err
+//}
+
+func makeRequest(u string, ch chan<- *models.Page) {
+	start := time.Now()
+
 	f := crawler.HttpFetcher{}
 	b, urls, err := f.Fetch(u)
 	if err != nil {
-		return nil, err
+		log.CRITICAL.Println(err)
+		ch <- nil
+		return
 	}
 
 	p := models.NewPage(u)
@@ -81,5 +114,9 @@ func gettheweb(u string) (*models.Page, error) {
 	p.RawBody = b
 	p.Urls = urls
 
-	return p, err
+	secs := time.Since(start).Seconds()
+
+	log.INFO.Printf("%.2f elapsed", secs)
+
+	ch <- p
 }

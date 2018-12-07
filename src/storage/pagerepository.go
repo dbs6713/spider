@@ -18,12 +18,8 @@ func GetPageRepository(adapter string, args ...string) (*PageRepository, error) 
 	case "mem":
 		a = NewMemDriver()
 		break
-	//case "mysql":
-	//	drv, err := NewMySQLDriver(args[0], args[1], args[2], args[3], args[4])
-	//	if err != nil {
-	//		return nil, err
-	//	}
-	//	a = drv
+	case "mysql":
+		a = NewMysqlDriver(args[0], args[1], args[2], args[3], args[4])
 	default:
 		return nil, errors.New("no storage adapter found")
 	}

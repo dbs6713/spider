@@ -24,13 +24,19 @@ var crawlCmd = &cobra.Command{
 		var fetchCnt = 0
 		var fetchTot = viper.GetInt("core.count")
 		var seedURL = viper.GetString("core.seed")
+		var user = viper.GetString("db.user")
+		var pass = viper.GetString("db.pass")
+		var dbn = viper.GetString("db.dbname")
+		var host = viper.GetString("db.host")
+		var port = viper.GetString("db.port")
 
 		URLque := make([]string, 0)
 		ch := make(chan *models.Page)
 
 		start := time.Now()
 
-		repo, err := storage.GetPageRepository("mem")
+		//repo, err := storage.GetPageRepository("mem")
+		repo, err := storage.GetPageRepository("mysql", user, pass, host, port, dbn)
 		if err != nil {
 			log.FATAL.Fatal(err)
 		}

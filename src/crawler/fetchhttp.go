@@ -6,16 +6,21 @@ import (
 )
 
 type HttpFetcher struct {
-	body string
-	urls []string
+	body   string
+	client *http.Client
+	urls   []string
+}
+
+func NewHttpFetcher() *HttpFetcher {
+	t := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	c := &http.Client{Transport: t}
+	return &HttpFetcher{client: c}
 }
 
 func (f HttpFetcher) Fetch(url string) (string, []string, error) {
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-	client := &http.Client{Transport: tr}
-	res, err := client.Get(url)
+	res, err := f.client.Get(url)
 	if err != nil {
 		return "", nil, err
 	}

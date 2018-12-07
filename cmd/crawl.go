@@ -35,17 +35,14 @@ var crawlCmd = &cobra.Command{
 			log.FATAL.Fatal(err)
 		}
 
+		fetcher := crawler.NewHttpFetcher()
+
 		URLque = append(URLque, seedURL)
 
 		for i := 0; fetchCnt < fetchTot || len(URLque) == 0; i++ {
-			go makeRequest(URLque[0], ch)
+			go makeRequest(URLque[0], fetcher, ch)
 
 			p := <-ch
-
-			//p, err := makeRequest(URLque[0])
-			//if err != nil {
-			//	log.CRITICAL.Println(err)
-			//}
 
 			if p == nil {
 				log.ERROR.Printf("ERROR: page fetch %s", URLque[0])
@@ -68,7 +65,6 @@ var crawlCmd = &cobra.Command{
 			fetchCnt++
 			log.INFO.Printf("Pages fetched: %d", fetchCnt)
 
-			//log.INFO.Printf("URL: %s\nContent: %s\n",p.RawUrl, p.RawBody)
 			log.INFO.Printf("URL: %s\n", p.RawUrl)
 			for x := 0; x < len(p.Urls); x++ {
 				log.INFO.Printf("     %s\n", p.Urls[x])
@@ -88,25 +84,7 @@ var crawlCmd = &cobra.Command{
 	},
 }
 
-//func makeRequest(u string) (*models.Page, error) {
-//	f := crawler.HttpFetcher{}
-//	b, urls, err := f.Fetch(u)
-//	if err != nil {
-//		return nil, err
-//	}
-//
-//	p := models.NewPage(u)
-//	p.Fetched = true
-//	p.RawBody = b
-//	p.Urls = urls
-//
-//	return p, err
-//}
-
-func makeRequest(u string, ch chan<- *models.Page) {
-	start := time.Now()
-
-	f := crawler.HttpFetcher{}
+func makeRequest(u string, f crawler.Fetcher, ch chan<- *models.Page) {
 	b, urls, err := f.Fetch(u)
 	if err != nil {
 		log.ERROR.Println(err)
@@ -118,10 +96,6 @@ func makeRequest(u string, ch chan<- *models.Page) {
 	p.Fetched = true
 	p.RawBody = b
 	p.Urls = urls
-
-	secs := time.Since(start).Seconds()
-
-	log.INFO.Printf("%.2f elapsed", secs)
 
 	ch <- p
 }
